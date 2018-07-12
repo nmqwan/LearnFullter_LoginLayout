@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
+import 'service.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class Login extends StatefulWidget {
 class LoginState extends State<Login> {
   final TextEditingController _edtUsername = new TextEditingController();
   final TextEditingController _edtPassword = new TextEditingController();
+  final key = new GlobalKey<ScaffoldState>();
 
   _createLoginContainer(context) {
     return new Container(
@@ -84,12 +87,63 @@ class LoginState extends State<Login> {
     );
   }
 
-  _rememberRegister(context){
-
+  _rememberRegister(context) {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Flexible(
+            flex: 1,
+            child: GestureDetector(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Forgot Password", style: TextStyle(color: Colors.blue)),
+                  Image(
+                    image: AssetImage("images/logo.png"),
+                    color: Colors.blue,
+                    height: 30.0,
+                    width: 30.0,
+                  )
+                ],
+              ),
+              onTap: () => _forgotPassword(context),
+            ),
+          ),
+          Flexible(
+            flex: 1,
+            child: GestureDetector(
+              onTap: _register(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Register",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  Image(
+                    image: AssetImage("images/logo.png"),
+                    color: Colors.blue,
+                    height: 30.0,
+                    width: 30.0,
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
+
   _onLogin() {
-    print(_edtUsername.text);
-    print(_edtPassword.text);
+    Service service = new Service();
+    service.login(_edtUsername.text, _edtPassword.text).then((u) {
+      Scaffold
+          .of(context)
+          .showSnackBar(SnackBar(content: Text(u.toString())));
+    }).catchError((e) {
+      print("1111111111       "+e.toString());
+    });
   }
 
   @override
@@ -121,9 +175,16 @@ class LoginState extends State<Login> {
               Flexible(
                 flex: 1,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 50.0),
-                  child: _createLoginContainer(context),
-                ),
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Column(
+                      children: <Widget>[
+                        _createLoginContainer(context),
+                        Padding(
+                          padding: EdgeInsets.only(top: 20.0),
+                          child: _rememberRegister(context),
+                        )
+                      ],
+                    )),
               )
             ],
           ),
@@ -131,4 +192,14 @@ class LoginState extends State<Login> {
       ),
     );
   }
+
+  _forgotPassword(context) {
+    setState(() {
+      Scaffold
+          .of(context)
+          .showSnackBar(SnackBar(content: Text('Forgot password')));
+    });
+  }
+
+  _register() {}
 }

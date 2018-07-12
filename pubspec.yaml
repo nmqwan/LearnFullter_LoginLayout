@@ -2,6 +2,7 @@ name: login
 description: A new Flutter application.
 
 dependencies:
+  http: "^0.11.3+16"
   flutter:
     sdk: flutter
 
@@ -13,6 +14,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+environment:
+  sdk: ">=1.23.0-dev.0.0 <2.0.0"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
