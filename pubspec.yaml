@@ -2,6 +2,7 @@ name: login
 description: A new Flutter application.
 
 dependencies:
+  modal_progress_hud: "^0.0.5"
   http: "^0.11.3+16"
   flutter:
     sdk: flutter

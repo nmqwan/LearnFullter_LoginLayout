@@ -5,6 +5,7 @@ import 'service.dart';
 import 'home.dart';
 import 'User.dart';
 import 'error.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class LoginState extends State<Login> {
   final TextEditingController _edtUsername = new TextEditingController();
   final TextEditingController _edtPassword = new TextEditingController();
   final key = new GlobalKey<ScaffoldState>();
+  bool _isLoading = false;
 
   _createLoginContainer(context) {
     return new Container(
@@ -139,8 +141,14 @@ class LoginState extends State<Login> {
   }
 
   _onLogin() {
+    setState(() {
+      _isLoading=true;
+    });
     Service service = new Service();
     service.login(_edtUsername.text, _edtPassword.text).then((u) {
+      setState(() {
+        _isLoading=false;
+      });
       if (u is User) {
         Navigator.pushReplacement(
             context,
@@ -166,7 +174,10 @@ class LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
+    return ModalProgressHUD(
+      inAsyncCall: _isLoading,
+      opacity: 0.5,
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
       child: Stack(
         children: <Widget>[
           Image(
