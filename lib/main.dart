@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+import 'home.dart';
 
 void main() => runApp(new MyApp());
 
@@ -19,6 +20,10 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         body: Login(),
       ),
+      routes: <String, WidgetBuilder> {
+        '/login': (BuildContext context) => new Login(),
+//        '/home': (BuildContext context) => new Home(_token),
+      },
     );
   }
 }

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'service.dart';
+import 'home.dart';
+import 'User.dart';
+import 'error.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -138,11 +141,25 @@ class LoginState extends State<Login> {
   _onLogin() {
     Service service = new Service();
     service.login(_edtUsername.text, _edtPassword.text).then((u) {
-      Scaffold
-          .of(context)
-          .showSnackBar(SnackBar(content: Text(u.toString())));
+      if (u is User) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Home(u.token),
+            ));
+//        Navigator.push(
+//          context,
+//          MaterialPageRoute(
+//            builder: (context) => Home(u.token),
+//          ),
+//        );
+      } else {
+        Scaffold
+            .of(context)
+            .showSnackBar(SnackBar(content: Text(u.toString())));
+      }
     }).catchError((e) {
-      print("1111111111       "+e.toString());
+      print(e.toString());
     });
   }
 
